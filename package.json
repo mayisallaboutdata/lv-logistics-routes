@@ -1,0 +1,9 @@
+{
+  "name": "lv-logistics-routes",
+  "version": "1.0.0",
+  "description": "Static Leaflet map for LV Logistics global route network.",
+  "type": "module",
+  "scripts": {
+    "check": "node --check js/bundle.js js/app.js js/map.js js/config.js"
+  }
+}
