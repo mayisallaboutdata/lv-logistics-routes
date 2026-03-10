@@ -6,15 +6,17 @@ Interactive map visualizing LV Logistics' global shipping routes to the Caspian 
 
 ```
 lv-logistics-routes/
-├── index.html          # HTML structure only
+├── index.html          # HTML shell, loads the bundled script
 ├── css/
 │   └── styles.css      # All styles & CSS custom properties (themes)
 ├── js/
-│   ├── config.js       # Route data, hubs, icons, notes (data layer)
-│   ├── map.js          # Leaflet map init & theme toggle
-│   └── app.js          # UI logic, route building, interactions
+│   └── bundle.js       # Bundled app: data, map init, UI logic
 ├── assets/
-│   └── logo.png        # Company logo
+│   ├── logo.png        # Company logo
+│   ├── ocean_freight.png  # Ship icon (ocean freight)
+│   ├── road_transport.png # Truck icon (road transport)
+│   └── rail_freight.png   # Train icon (rail transport)
+├── package.json        # Optional: `npm run check` for JS syntax
 └── README.md
 ```
 
@@ -38,22 +40,26 @@ lv-logistics-routes/
 
 ## Customization
 
+> Note: the project now ships as a **single bundled script** (`js/bundle.js`). All map data and logic live there.
+
 | What | Where |
 |------|-------|
-| Add/edit routes | `js/config.js` → `ROUTES` object |
-| Add/edit hubs | `js/config.js` → `HUBS` array |
-| Change icons | `js/config.js` → `ICONS` object (SVG or `<img>` tags) |
-| Edit route notes | `js/config.js` → `ROUTE_NOTES` object |
-| Change colors | `js/config.js` → `ROUTE_COLORS` |
+| Add/edit routes | `js/bundle.js` → `ROUTES` / `TRANSPORT_ICONS` / `BADGES` |
+| Add/edit hubs | `js/bundle.js` → `HUBS` array |
+| Change icons | `js/bundle.js` → `ICON_DATA` (PNG paths in `assets/`) |
+| Edit route notes | `js/bundle.js` → `ROUTE_NOTES` object |
+| Change colors | `js/bundle.js` → `ROUTE_COLORS` |
 | Modify theme | `css/styles.css` → CSS custom properties in `:root` and `body.light-mode` |
-| Replace logo | Swap `assets/logo.png` |
+| Replace logo / icons | Swap files in `assets/` |
 
 ## Tech
 
 - [Leaflet.js 1.9.4](https://leafletjs.com/) — map rendering
 - [CARTO](https://carto.com/) — tile layers (dark & light)
-- ES Modules — clean `import/export` between JS files
-- No build step, no dependencies to install
+- Single bundled JS file (`js/bundle.js`) — no build step required
+- Optional Node tooling:
+  - `package.json` with `"type": "module"`
+  - `npm run check` → quick syntax check for all JS files
 
 ## Deployment (GitHub Pages)
 
