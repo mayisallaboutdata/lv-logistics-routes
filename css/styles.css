@@ -324,12 +324,28 @@
    .legend-transport-item {
      display: flex;
      align-items: center;
-     gap: 5px;
+     gap: 6px;
      font-size: 10.5px;
      color: var(--text-secondary);
      transition: color 0.4s;
    }
-   
+
+   .legend-transport-icon {
+     display: inline-flex;
+     align-items: center;
+     justify-content: center;
+     width: 18px;
+     height: 18px;
+     color: var(--text-label);
+     flex-shrink: 0;
+   }
+
+   .legend-transport-icon svg {
+     width: 100%;
+     height: 100%;
+     fill: currentColor;
+   }
+
    .legend-transport-item svg { flex-shrink: 0; }
    
    /* ── Info Panel ── */
@@ -508,31 +524,50 @@
    
    /* ── Transport Icons & Badges ── */
    .transport-svg-icon {
+     width: 30px;
+     height: 30px;
      display: flex;
      align-items: center;
      justify-content: center;
-     filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.7));
+     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.55))
+             drop-shadow(0 0 6px rgba(0, 0, 0, 0.35));
+     transition: transform 0.18s ease, opacity 0.25s ease;
+     cursor: pointer;
    }
-  
-  .transport-svg-icon img {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: block;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
-  }
+
+   .transport-svg-icon:hover {
+     transform: scale(1.18);
+   }
+
+   .transport-svg-icon svg {
+     width: 100%;
+     height: 100%;
+     fill: currentColor;
+   }
+
+   .transport-marker-wrap {
+     background: transparent !important;
+     border: none !important;
+   }
    
-   .transit-badge {
+   /* Always-visible transit time labels */
+   .transit-label-wrap {
+     background: transparent !important;
+     border: none !important;
+   }
+
+   .transit-label {
      font-family: 'Space Mono', monospace;
-     font-size: 9.5px;
+     font-size: 10.5px;
      font-weight: 700;
      color: #fff;
-     padding: 3px 9px;
-     border-radius: 16px;
+     padding: 5px 12px;
+     border-radius: 14px;
      white-space: nowrap;
-     letter-spacing: 0.4px;
-     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.5);
-     border: 1px solid var(--badge-border);
+     letter-spacing: 0.5px;
+     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+     border: 1.5px solid;
+     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
    }
    
    /* ── Scrollbars ── */
@@ -548,25 +583,21 @@
      border-radius: 2px;
    }
    
-  /* ── Zoom-based icon scaling ─ */
-  /* At lowest zoom: just shrink icons instead of hiding them */
-  body[data-zoom="tiny"] .transport-svg-icon img {
-    width: 16px !important;
-    height: 16px !important;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.35) !important;
+  /* ── Zoom-based icon scaling ── */
+  body[data-zoom="tiny"] .transport-svg-icon {
+    width: 18px !important;
+    height: 18px !important;
   }
-  body[data-zoom="tiny"] .transit-badge {
-    font-size: 8px !important;
-    padding: 2px 5px !important;
+  body[data-zoom="tiny"] .transit-label {
+    font-size: 8.5px !important;
+    padding: 3px 8px !important;
   }
-  
-  /* At medium zoom: slightly smaller icons */
-  body[data-zoom="small"] .transport-svg-icon img {
-    width: 20px !important;
-    height: 20px !important;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.4) !important;
+
+  body[data-zoom="small"] .transport-svg-icon {
+    width: 24px !important;
+    height: 24px !important;
   }
-   body[data-zoom="small"] .transit-badge {
-     font-size: 8px !important;
-     padding: 2px 6px !important;
-   }
+  body[data-zoom="small"] .transit-label {
+    font-size: 9.5px !important;
+    padding: 4px 10px !important;
+  }
