@@ -8,6 +8,19 @@ Thumbs.db
 *.swp
 *.swo
 
-# Node (in case someone adds it later)
+# Node (used locally for generate-routes.js)
 node_modules/
+package.json
 package-lock.json
+
+# Generated route data — already baked into bundle.js
+routes.json
+generate-routes.js
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment files
+.env
+.env.local
