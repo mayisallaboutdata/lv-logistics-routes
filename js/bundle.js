@@ -60,7 +60,7 @@ const ROUTE_NOTES = {
     notes: [
       '<strong>Service type:</strong> FTL/LTL — road & multimodal transport',
       '<strong>Route A — Road:</strong> EU hubs → Frankfurt → Vienna → Budapest → Romania → Bulgaria → Istanbul → Tbilisi → Baku',
-      '<strong>France leg:</strong> Paris → Strasbourg → Frankfurt — LTL groupage joins the main corridor toward Istanbul',
+      '<strong>France leg:</strong> Paris → Lyon → Fréjus tunnel → Milan → Trieste → Belgrade → Sofia — joins the main corridor toward Istanbul (E70 / Corridor X)',
       '<strong>Route B — Ferry:</strong> EU hubs → Trieste → Mediterranean ferry → Mersin, Turkey → overland → Baku',
       '<strong>Main EU hubs:</strong> Rotterdam, Paris, Warsaw, Trieste',
       '<strong>Transit time:</strong> 17 to 25 days (door to door)',
@@ -105,7 +105,7 @@ const ROAD_SEGMENTS = {
     [52.23, 21.01], [48.21, 16.37],
   ],
   route4_paris: [
-    [48.86, 2.35], [48.57, 7.75], [50.11, 8.68],
+    [48.86, 2.35], [45.76, 4.84], [45.46, 9.19], [45.65, 13.77], [44.79, 20.45], [42.70, 23.32],
   ],
   route4_to_baku: [
     [41.01, 28.98], [40.20, 38.93], [41.02, 40.51], [41.69, 44.80], [40.41, 49.87],
@@ -131,7 +131,7 @@ const TRANSPORT_ICONS = [
   { lat: 42.5,  lng:  90.0, icon: 'train', tip: 'Rail — Western China corridor', route: 'route3' },
   { lat: 47.0,  lng:  62.0, icon: 'train', tip: 'Rail — Kazakhstan steppe', route: 'route3' },
   { lat: 41.8,  lng:  50.8, icon: 'ship',  tip: 'Vessel — Caspian Sea crossing (Aktau → Baku)', route: 'route3' },
-  { lat: 48.7,  lng:   5.2, icon: 'truck', tip: 'LTL groupage — Paris → Strasbourg → Frankfurt corridor', route: 'route4' },
+  { lat: 45.4,  lng:  10.8, icon: 'truck', tip: 'LTL groupage — Paris → Lyon → Milan → Balkan corridor', route: 'route4' },
   { lat: 38.0,  lng:  20.5, icon: 'ship',  tip: 'Ferry — Trieste → Mediterranean → Mersin', route: 'route4' },
   { lat: -15.0, lng:  85.0, icon: 'ship',  tip: 'Vessel — Indian Ocean (Cape route)', route: 'route5' },
   { lat: -33.0, lng:  35.0, icon: 'ship',  tip: 'Vessel — South of Madagascar', route: 'route5' },
@@ -156,7 +156,7 @@ const HUBS = [
   { name: 'TRIESTE',   lat: 45.65, lng: 13.77,  type: 'major',   color: '#fff', routes: ['Route 4'], desc: 'Italian port — Mediterranean ferry to Mersin' },
   { name: 'FRANKFURT', lat: 50.11, lng: 8.68,   type: 'major',   color: '#fff', routes: ['Route 4'], desc: 'European road hub' },
   { name: 'WARSAW',    lat: 52.23, lng: 21.01,  type: 'major',   color: '#fff', routes: ['Route 4'], desc: 'Northern European connector' },
-  { name: 'PARIS',     lat: 48.86, lng: 2.35,   type: 'major',   color: '#fff', routes: ['Route 4'], desc: 'French consolidation hub — LTL groupage toward Turkey via Strasbourg and Frankfurt' },
+  { name: 'PARIS',     lat: 48.86, lng: 2.35,   type: 'major',   color: '#fff', routes: ['Route 4'], desc: 'French consolidation hub — LTL groupage via Lyon, Milan and the Balkan corridor toward Turkey' },
   { name: 'HOUSTON',   lat: 29.76, lng: -95.36, type: 'major',   color: '#fff', routes: ['Route 1'], desc: 'US consolidation hub' },
   { name: 'GUANGZHOU', lat: 23.13, lng: 113.26, type: 'major',   color: '#fff', routes: ['Route 2'], desc: 'China consolidation hub' },
   { name: 'SHANGHAI',  lat: 31.23, lng: 121.47, type: 'major',   color: '#fff', routes: ['Route 2','Route 3','Route 5'], desc: 'Major China origin port' },
