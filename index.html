@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LV Logistics — Global Route Network</title>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header-overlay">
+    <img class="header-logo" src="assets/logo.png" alt="LV Logistics" onerror="this.style.display='none'">
+    <div class="header-text">
+      <h1>LV Logistics</h1>
+      <p>Global Route Network — Caspian Corridor</p>
+    </div>
+  </div>
+
+  <!-- Top Controls -->
+  <div class="top-controls">
+    <button onclick="zoomTo('global')">Global</button>
+    <button onclick="zoomTo('europe')">Europe</button>
+    <button onclick="zoomTo('asia')">East Asia</button>
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Switch to light mode">☀️</button>
+  </div>
+
+  <!-- Legend Panel -->
+  <div class="legend-panel">
+    <div class="legend-title">Routes &amp; Services</div>
+
+    <div class="legend-item" data-route="route1" onclick="toggleRoute('route1')">
+      <div class="legend-line dashed" style="--clr: #a855f7;"></div>
+      <span class="legend-label">FCL/LCL — USA via Rotterdam → CIS</span>
+      <span class="legend-days">30-35d</span>
+      <button class="legend-note-btn has-notes" onclick="event.stopPropagation(); showNotes('route1')" title="Route notes">📋</button>
+    </div>
+
+    <div class="legend-item" data-route="route2" onclick="toggleRoute('route2')">
+      <div class="legend-line dashed" style="--clr: #ef4444;"></div>
+      <span class="legend-label">FCL/LCL — China via Turkey → CIS</span>
+      <span class="legend-days">35-40d</span>
+      <button class="legend-note-btn has-notes" onclick="event.stopPropagation(); showNotes('route2')" title="Route notes">📋</button>
+    </div>
+
+    <div class="legend-item" data-route="route3" onclick="toggleRoute('route3')">
+      <div class="legend-line dashed" style="--clr: #f59e0b;"></div>
+      <span class="legend-label">Silkway — China via Kazakhstan</span>
+      <span class="legend-days">28-30d</span>
+      <button class="legend-note-btn has-notes" onclick="event.stopPropagation(); showNotes('route3')" title="Route notes">📋</button>
+    </div>
+
+    <div class="legend-item" data-route="route4" onclick="toggleRoute('route4')">
+      <div class="legend-line dashed" style="--clr: #10b981;"></div>
+      <span class="legend-label">FTL/LTL — EU via Turkey → CIS</span>
+      <span class="legend-days">17-25d</span>
+      <button class="legend-note-btn has-notes" onclick="event.stopPropagation(); showNotes('route4')" title="Route notes">📋</button>
+    </div>
+
+    <div class="legend-item" data-route="route5" onclick="toggleRoute('route5')">
+      <div class="legend-line dashed" style="--clr: #38bdf8;"></div>
+      <span class="legend-label">Via Cape of Good Hope → CIS</span>
+      <span class="legend-days">45-55d</span>
+      <button class="legend-note-btn has-notes" onclick="event.stopPropagation(); showNotes('route5')" title="Route notes">📋</button>
+    </div>
+
+    <div class="legend-section">
+      <div class="legend-transport-item">
+        <span class="legend-transport-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6,6H18V9.96L12,8L6,9.96M3.94,19H4C5.6,19 7,18.12 8,17C9,18.12 10.4,19 12,19C13.6,19 15,18.12 16,17C17,18.12 18.4,19 20,19H20.05L21.95,12.31C22.03,12.06 22,11.78 21.89,11.54C21.76,11.3 21.55,11.12 21.29,11.04L20,10.62V6C20,4.89 19.1,4 18,4H15V1H9V4H6A2,2 0 0,0 4,6V10.62L2.71,11.04C2.45,11.12 2.24,11.3 2.11,11.54C2,11.78 1.97,12.06 2.05,12.31M20,21C18.61,21 17.22,20.53 16,19.67C13.56,21.38 10.44,21.38 8,19.67C6.78,20.53 5.39,21 4,21H2V23H4C5.37,23 6.74,22.65 8,22C10.5,23.3 13.5,23.3 16,22C17.26,22.65 18.62,23 20,23H22V21"/></svg></span>
+        <span>Ocean / Sea</span>
+      </div>
+      <div class="legend-transport-item">
+        <span class="legend-transport-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18,18.5A1.5,1.5 0 0,1 16.5,17A1.5,1.5 0 0,1 18,15.5A1.5,1.5 0 0,1 19.5,17A1.5,1.5 0 0,1 18,18.5M19.5,9.5L21.46,12H17V9.5M6,18.5A1.5,1.5 0 0,1 4.5,17A1.5,1.5 0 0,1 6,15.5A1.5,1.5 0 0,1 7.5,17A1.5,1.5 0 0,1 6,18.5M20,8H17V4H3C1.89,4 1,4.89 1,6V17H3A3,3 0 0,0 6,20A3,3 0 0,0 9,17H15A3,3 0 0,0 18,20A3,3 0 0,0 21,17H23V12L20,8Z"/></svg></span>
+        <span>Road</span>
+      </div>
+      <div class="legend-transport-item">
+        <span class="legend-transport-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12,2C8,2 4,2.5 4,6V15.5A3.5,3.5 0 0,0 7.5,19L6,20.5V21H8.23L10.23,19H14L16,21H18V20.5L16.5,19A3.5,3.5 0 0,0 20,15.5V6C20,2.5 16.42,2 12,2M7.5,17A1.5,1.5 0 0,1 6,15.5A1.5,1.5 0 0,1 7.5,14A1.5,1.5 0 0,1 9,15.5A1.5,1.5 0 0,1 7.5,17M11,10H6V6H11V10M13,10V6H18V10H13M16.5,17A1.5,1.5 0 0,1 15,15.5A1.5,1.5 0 0,1 16.5,14A1.5,1.5 0 0,1 18,15.5A1.5,1.5 0 0,1 16.5,17Z"/></svg></span>
+        <span>Rail</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Info Panel -->
+  <div class="info-panel" id="infoPanel">
+    <button class="info-panel-close" onclick="closeInfoPanel()">×</button>
+    <div class="info-panel-title" id="infoPanelTitle"></div>
+    <div class="info-panel-detail" id="infoPanelDetail"></div>
+  </div>
+
+  <!-- Notes Panel -->
+  <div class="notes-panel" id="notesPanel">
+    <div class="notes-panel-header">
+      <div class="notes-panel-title" id="notesPanelTitle"></div>
+      <button class="notes-panel-close" onclick="closeNotesPanel()">×</button>
+    </div>
+    <div id="notesPanelContent"></div>
+  </div>
+
+  <!-- Map Container -->
+  <div id="map"></div>
+
+  <!-- Single bundled script — no ES module imports needed -->
+  <script src="js/bundle.js"></script>
+
+</body>
+</html>
