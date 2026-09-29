@@ -183,10 +183,6 @@ const ZOOM_REGIONS = {
 // MAP INITIALIZATION
 // ═══════════════════════════════════════════════════════════════════
 
-const darkBase = L.tileLayer(
-  'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',
-  { attribution: '&copy; OSM &copy; CARTO', subdomains: 'abcd', maxZoom: 19 }
-);
 const lightBase = L.tileLayer(
   'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
   { attribution: '&copy; Esri &copy; OpenStreetMap contributors', maxZoom: 19 }
@@ -203,29 +199,12 @@ const map = L.map('map', {
 });
 
 L.control.attribution({ position: 'bottomright', prefix: false })
-  .addAttribution('© OpenStreetMap / Esri / CARTO')
+  .addAttribution('© OpenStreetMap / Esri')
   .addTo(map);
 
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-let isDarkMode = true;
-darkBase.addTo(map);
-
-function toggleTheme() {
-  isDarkMode = !isDarkMode;
-  const btn = document.getElementById('themeBtn');
-  if (isDarkMode) {
-    map.removeLayer(lightBase);
-    darkBase.addTo(map);
-    document.body.classList.remove('light-mode');
-    btn.textContent = '☀️'; btn.title = 'Switch to light mode';
-  } else {
-    map.removeLayer(darkBase);
-    lightBase.addTo(map);
-    document.body.classList.add('light-mode');
-    btn.textContent = '🌙'; btn.title = 'Switch to dark mode';
-  }
-}
+lightBase.addTo(map);
 
 function updateZoomScale() {
   const z = map.getZoom();
@@ -483,7 +462,6 @@ function zoomTo(region) {
 buildRoutes();
 updateZoomScale();
 
-window.toggleTheme     = toggleTheme;
 window.toggleRoute     = toggleRoute;
 window.showNotes       = showNotes;
 window.closeNotesPanel = closeNotesPanel;

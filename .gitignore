@@ -23,4 +23,10 @@ npm-debug.log*
 
 # Environment files
 .env
-.env.local
+.env.*
+
+# Backup / temp files
+*.bak
+*.orig
+*.tmp
+*~
