@@ -16,7 +16,6 @@ lv-logistics-routes/
 │   ├── ocean_freight.png  # Ship icon (ocean freight)
 │   ├── road_transport.png # Truck icon (road transport)
 │   └── rail_freight.png   # Train icon (rail transport)
-├── package.json        # Optional: `npm run check` for JS syntax
 └── README.md
 ```
 
@@ -24,19 +23,19 @@ lv-logistics-routes/
 
 | Route | Color | Path | Transit |
 |-------|-------|------|---------|
-| **LCL — USA** | Purple | Houston → Atlantic → Rotterdam → Med → Istanbul → Baku | 30–35 days |
-| **LCL — China** | Red | Guangzhou → Singapore → Suez → Mersin → Istanbul → Baku | 35–40 days |
-| **Silkway Rail** | Orange | Shanghai → Xi'an → Kazakhstan → Aktau → Caspian → Baku | 28–30 days |
-| **LTL — EU** | Green | Paris/Frankfurt/Warsaw → Balkans → Istanbul → Georgia → Baku | 17–25 days |
-| **Cape Alt** | Blue | Shanghai → Singapore → Cape of Good Hope → Rotterdam | 45–55 days |
+| **FCL/LCL — USA via Rotterdam** | Purple | Houston → Atlantic → Rotterdam → onward via FTL/LTL → Baku | 30–35 days |
+| **FCL/LCL — China via Turkey** | Red | Guangzhou → Singapore → Suez Canal → Mersin → overland → Baku | 35–40 days |
+| **Silkway — China via Kazakhstan** | Orange | Shanghai/Beijing/… → Xi'an → Dostyk → Kazakhstan → Aktau → Caspian → Baku/Alat | 28–30 days |
+| **FTL/LTL — EU via Turkey** | Green | EU hubs (Frankfurt/Warsaw/Paris/Trieste) → Balkans/Turkey → Istanbul → Tbilisi → Baku | 17–25 days |
+| **Via Cape of Good Hope** | Blue | Shanghai → Singapore → Cape of Good Hope → Gibraltar → Mediterranean → Mersin → Istanbul → Baku | 45–55 days |
 
 ## Features
 
-- Light / Dark mode toggle
-- Interactive route toggling
+- Interactive route toggling, with route notes & transit times via 📋 icons
 - Hub-spoke pattern (solid main routes, dashed feeder lines)
-- Click hubs for details, route notes via 📋 icons
-- Quick zoom navigation (Global / Europe / Central Asia / East Asia)
+- Click hubs for details
+- Quick zoom navigation (Global / Europe / East Asia)
+- Road legs are fetched live from OSRM and cached as rendered polylines — see **Routing notes** below
 
 ## Customization
 
@@ -44,22 +43,40 @@ lv-logistics-routes/
 
 | What | Where |
 |------|-------|
-| Add/edit routes | `js/bundle.js` → `ROUTES` / `TRANSPORT_ICONS` / `BADGES` |
+| Add/edit ocean or ferry paths | `js/bundle.js` → `OCEAN_ROUTES` |
+| Add/edit live-routed road legs | `js/bundle.js` → `ROAD_SEGMENTS` (fetched via OSRM in `buildRoutes()`) |
+| Add/edit transport icons along a route | `js/bundle.js` → `TRANSPORT_ICONS` |
+| Add/edit transit-time labels | `js/bundle.js` → `TRANSIT_LABELS` |
 | Add/edit hubs | `js/bundle.js` → `HUBS` array |
-| Change icons | `js/bundle.js` → `ICON_DATA` (PNG paths in `assets/`) |
-| Edit route notes | `js/bundle.js` → `ROUTE_NOTES` object |
+| Change marker/route icons | `js/bundle.js` → `SVG_ICONS` |
+| Edit route notes (the 📋 panel) | `js/bundle.js` → `ROUTE_NOTES` object |
 | Change colors | `js/bundle.js` → `ROUTE_COLORS` |
 | Modify theme | `css/styles.css` → CSS custom properties in `:root` and `body.light-mode` |
 | Replace logo / icons | Swap files in `assets/` |
 
+## Routing notes
+
+Road segments are routed live against the public [OSRM](https://project-osrm.org/) demo server
+(`router.project-osrm.org`), which returns real road geometry for a given pair of coordinates —
+see `fetchOSRMRoute()` in `js/bundle.js`.
+
+That public server's road graph has a small gap exactly at the Georgia/Azerbaijan border
+checkpoint (Red Bridge, near Sadakhlo/Qazakh): querying it end-to-end for Tbilisi → Baku
+silently detours ~500km south through Armenia to find a connected path, instead of the real
+~500km route east through Azerbaijan. The gap itself, once binary-searched against the live
+server, turned out to be only ~700m wide — right at the checkpoint. `buildGeorgiaAzerbaijanCrossing()`
+routes everything else live and bridges only that unavoidable ~700m with a straight line, so the
+Tbilisi–Baku leg (shared by routes 1, 2, 4, and 5) stays on real roads through Georgia and
+Azerbaijan instead of cutting through Armenia.
+
+If OSRM's routing improves or you move to a self-hosted instance, this workaround can likely be
+simplified back to a single live-routed call across `ROAD_SEGMENTS.*_to_baku`.
+
 ## Tech
 
 - [Leaflet.js 1.9.4](https://leafletjs.com/) — map rendering
-- [CARTO](https://carto.com/) — tile layers (dark & light)
+- [Esri World Street Map](https://www.esri.com/) tiles (via ArcGIS Online), OpenStreetMap contributors
 - Single bundled JS file (`js/bundle.js`) — no build step required
-- Optional Node tooling:
-  - `package.json` with `"type": "module"`
-  - `npm run check` → quick syntax check for all JS files
 
 ## Deployment (GitHub Pages)
 
