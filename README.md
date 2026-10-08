@@ -72,6 +72,11 @@ Azerbaijan instead of cutting through Armenia.
 If OSRM's routing improves or you move to a self-hosted instance, this workaround can likely be
 simplified back to a single live-routed call across `ROAD_SEGMENTS.*_to_baku`.
 
+Past the border, OSRM's default path runs directly through Shamakhi town center, which
+management wants avoided. `GA_BORDER_TO_BAKU` adds a waypoint near Kurdamir to force the route
+onto the southern Hajigabul/Kurdamir lowland highway instead — a real road, ~11km longer, with
+45+km of clearance from Shamakhi.
+
 ## Tech
 
 - [Leaflet.js 1.9.4](https://leafletjs.com/) — map rendering

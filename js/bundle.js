@@ -126,8 +126,13 @@ const ROAD_SEGMENTS = {
 // the Georgia/Azerbaijan border checkpoint (Red Bridge) — probed down to a
 // ~700m gap between the last reachable point on each side (binary-searched
 // against the live OSRM instance). Everything else is real routed road.
+//
+// GA_BORDER_TO_BAKU routes via Kurdamir to force OSRM onto the southern
+// Hajigabul/Kurdamir lowland highway instead of its default path straight
+// through Shamakhi town center (management wants Shamakhi avoided). Adds
+// only ~11km over the direct route and keeps 45+km of clearance.
 const GA_TBILISI_TO_BORDER = [[41.69, 44.80], [41.42, 45.17]];
-const GA_BORDER_TO_BAKU    = [[41.42, 45.178], [40.41, 49.87]];
+const GA_BORDER_TO_BAKU    = [[41.42, 45.178], [40.335, 48.1667], [40.41, 49.87]];
 
 async function buildGeorgiaAzerbaijanCrossing() {
   const [leg1, leg2] = await Promise.all([
